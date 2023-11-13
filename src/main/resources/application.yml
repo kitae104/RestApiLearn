@@ -1,0 +1,89 @@
+#################################
+# Port Number
+#################################
+server:
+  port: 80
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+#################################
+# Spring Setting
+#################################
+spring:
+  mvc:
+    format:
+      date: yyyy-MM-dd
+      date-time: yyyy-MM-dd HH:mm:ss
+
+  banner:
+    location: banner/banner.txt
+
+  application:
+    name: SpringLearn
+
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true
+
+  thymeleaf:
+    cache: false
+    encoding: UTF-8
+
+  #################################
+  # MySQL Setting
+  #################################
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/spring_learn?serverTimezone=UTC
+    username: root
+    password: 1234
+
+  #################################
+  # MySQL Setting
+  #################################
+  #  datasource:
+  #    url: jdbc:h2:mem:testdb
+
+
+  #################################
+  # JPA Setting
+  #################################
+  jpa:
+    open-in-view: true
+    hibernate:
+      ddl-auto: create
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+
+  ###############################
+  # Security User
+  ###############################
+  security:
+    user:
+      name: test@test.com
+      password: 1111
+
+###############################
+# Log info
+###############################
+logging:
+  level:
+    org:
+      springframework: info
+      hibernate:
+        type:
+          descriptor:
+            sql: trace
+    kr:
+      inhatc:
+        spring: info
