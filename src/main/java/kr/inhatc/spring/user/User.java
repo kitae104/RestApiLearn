@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Data
@@ -23,4 +25,15 @@ public class User {
     private String name;            // 이름
 
     private LocalDate birthDate;    // 생일
+
+    // 엔티티 리스트를 DTO 리스트로 변환
+    public static List<UserDto> toList(List<User> users) {
+        return users.stream()
+                .map(user -> UserDto.builder()
+                    .id(user.getId())
+                    .name(user.getName())
+                    .birthDate(user.getBirthDate())
+                    .build())
+                .collect(Collectors.toList());
+    }
 }
