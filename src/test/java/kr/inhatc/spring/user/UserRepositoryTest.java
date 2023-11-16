@@ -4,6 +4,7 @@ import com.github.javafaker.Faker;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -44,10 +45,11 @@ class UserRepositoryTest {
     }
 
     @Test
+    @Transactional
     public void makeUsersTest(){
         List<String> names = nameGenerator();       // 이름 생성
         createUsers(names);                         // 이름으로 유저 생성
         List<User> users = userRepository.findAll();   // 유저 전체 조회
-        assertEquals(3, users.size());                 // 유저 3명인지 확인
+        assertEquals(3, users.size());     // 유저 3명인지 확인
     }
 }
