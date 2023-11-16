@@ -1,5 +1,6 @@
 package kr.inhatc.spring.user;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +37,7 @@ public class UserController {
 
     // Post /users
     @PostMapping("/users")
-    public UserDto createUser(@RequestBody UserDto userDto) {
+    public UserDto createUser(@Valid @RequestBody UserDto userDto) {  // @RequestBody: HTTP 요청 몸체를 자바 객체로 전달받을 수 있음
         log.info("=================> createUser : " + userDto);
         UserDto savedUserDto = userService.save(userDto);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
