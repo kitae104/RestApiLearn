@@ -3,12 +3,17 @@ package kr.inhatc.spring.user;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,13 +31,18 @@ public class UserController {
 
     // Get /users/{id}
     @GetMapping("/users/{id}")
-    public UserDto retrieveUser(@PathVariable Long id) {  // @PathVariable: URL 경로에 변수를 넣어주는 것
+    public EntityModel<UserDto> retrieveUser(@PathVariable Long id) {  // @PathVariable: URL 경로에 변수를 넣어주는 것
         log.info("=================> retrieveUser");
         UserDto userDto = userService.findOne(id);
         if(userDto == null){
             throw  new UserNotFoundException(String.format("ID[%s] not found", id));
         }
-        return userDto;
+
+        // HATEOAS (Hypermedia As The Engine Of Application State) - REST API에서 링크 정보를 동적으로 생성하는 기법
+        EntityModel<UserDto> model = EntityModel.of(userDto);
+        WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).retrieveAllUsers());
+        model.add(link.withRel("all-users"));
+        return model;
     }
 
     // Post /users
