@@ -87,3 +87,9 @@ logging:
     kr:
       inhatc:
         spring: info
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*" # 모든 엔드포인트를 노출
