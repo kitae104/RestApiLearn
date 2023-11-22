@@ -1,5 +1,6 @@
 package kr.inhatc.spring.filtering;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 //@JsonIgnoreProperties(value = {"filed1", "filed2"})     // static filtering
+@JsonFilter("SomeBeanFilter")
 public class SomeBean {
     private String filed1;
 
