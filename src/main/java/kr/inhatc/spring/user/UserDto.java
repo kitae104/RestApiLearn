@@ -16,11 +16,11 @@ import java.time.LocalDate;
 public class UserDto {
     private Long id;                // id
     @Size(min = 2, message = "Name은 2글자 이상 입력해 주세요.")
-    @JsonProperty("user_name")
+    //@JsonProperty("user_name")
     private String name;            // 이름
 
     @Past(message = "생일은 과거 날짜만 가능합니다.")
-    @JsonProperty("birth_date")
+    //@JsonProperty("birth_date")
     private LocalDate birthDate;    // 생일
 
     public void setId(Long id) {
