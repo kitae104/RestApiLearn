@@ -1,6 +1,8 @@
 package kr.inhatc.spring.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import kr.inhatc.spring.post.Post;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,6 +27,10 @@ public class User {
     private String name;            // 이름
 
     private LocalDate birthDate;    // 생일
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Post> posts;       // 게시글 리스트
 
     // 엔티티 리스트를 DTO 리스트로 변환
     public static List<UserDto> toList(List<User> users) {
