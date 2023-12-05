@@ -1,7 +1,9 @@
 package kr.inhatc.spring.todo;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +15,8 @@ import java.util.stream.Collectors;
 public class TodoService {
 
     private final TodoRepository todoRepository;
+
+    private final ModelMapper modelMapper;
 
     public List<TodoDto> findByUsername(String username) {
         List<Todo> todoList = todoRepository.findByUsername(username);
@@ -26,5 +30,15 @@ public class TodoService {
                     .build())
                 .collect(Collectors.toList());
         return todoDtoList;
+    }
+
+    public TodoDto findById(Long id) {
+        Todo todo = todoRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        TodoDto todoDto = modelMapper.map(todo, TodoDto.class);
+        return todoDto;
+    }
+
+    public void deleteById(Long id) {
+        todoRepository.deleteById(id);
     }
 }
