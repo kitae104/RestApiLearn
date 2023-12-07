@@ -1,5 +1,6 @@
 package kr.inhatc.spring.todo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,7 +25,7 @@ public class Todo {
 
     private String description;
 
-    private LocalDateTime targetDate;
+    private LocalDate targetDate;
 
     private Boolean done;
 }
