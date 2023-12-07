@@ -20,7 +20,8 @@ public class TodoDto {
 
     private String description;
 
-    private LocalDateTime targetDate;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate targetDate;
 
     private Boolean done;
 }
