@@ -23,5 +23,5 @@ public class TodoDto {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate targetDate;
 
-    private Boolean done;
+    private boolean done;
 }
