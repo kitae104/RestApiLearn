@@ -1,23 +1,34 @@
 package kr.inhatc.spring.config;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
 //@Configuration
+//@EnableWebSecurity
 public class SecurityConfig {
 
 //    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//
-//        // 1. 모든 요청에 대해 인증을 요구하도록 설정
-//        http.authorizeRequests(authorizeRequests ->
-//                authorizeRequests.anyRequest().authenticated()
-//        );
-//
-//        // 2. 만약 인증되지 않은 사용자라면, 로그인 페이지로 이동
-//        http.httpBasic(withDefaults());
-//
-//        // 3. CSRF 토큰을 사용하지 않도록 설정
-//        http.csrf(httpSecurityCsrfConfigurer -> {
-//            httpSecurityCsrfConfigurer.disable();
-//        });
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        http
+//                .authorizeRequests(authorizeRequests ->
+//                        authorizeRequests
+//                                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+//                                .anyRequest().authenticated()
+//                )
+//                .httpBasic(Customizer.withDefaults())
+//                .sessionManagement(sessionManagement ->
+//                        sessionManagement
+//                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                )
+//                .csrf(AbstractHttpConfigurer::disable);
 //
 //        return http.build();
 //    }
