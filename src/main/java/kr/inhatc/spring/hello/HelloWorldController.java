@@ -17,6 +17,15 @@ public class HelloWorldController {
         this.messageSource = messageSource;
     }
 
+    /**
+     * 기본 인증 테스트
+     * @return Success 문자열 반환
+     */
+    @GetMapping("/basicauth")
+    public String basicAuthCheck() {
+        return "Success";
+    }
+
     // /hello-world (endpoint)
     @GetMapping("/hello-world")
     public String helloWorld() {
