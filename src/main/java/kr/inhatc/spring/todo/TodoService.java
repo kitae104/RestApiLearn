@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,5 +41,22 @@ public class TodoService {
 
     public void deleteById(Long id) {
         todoRepository.deleteById(id);
+    }
+
+    public void updateTodo(TodoDto todoDto) {
+        Todo todo = modelMapper.map(todoDto, Todo.class);
+        todoRepository.save(todo);
+    }
+
+    public TodoDto addTodo(String username, String description, LocalDate targetDate, boolean done) {
+        Todo todo = Todo.builder()
+                .username(username)
+                .description(description)
+                .targetDate(targetDate)
+                .done(done)
+                .build();
+        Todo savedTodo = todoRepository.save(todo);
+        TodoDto todoDto = modelMapper.map(savedTodo, TodoDto.class);
+        return todoDto;
     }
 }
