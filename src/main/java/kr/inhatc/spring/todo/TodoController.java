@@ -3,10 +3,7 @@ package kr.inhatc.spring.todo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,5 +31,22 @@ public class TodoController {
         log.info("==============> " + username + ", " + id);
         todoService.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/users/{username}/todos/{id}")
+    public TodoDto updateTodo(@PathVariable("username") String username,
+                              @PathVariable("id") Long id,
+                              @RequestBody TodoDto todoDto){
+        log.info("==============> " + username + ", " + id);
+        todoService.updateTodo(todoDto);
+        return todoDto;
+    }
+
+    @PostMapping("/users/{username}/todos")
+    public TodoDto createTodo(@PathVariable("username") String username,
+                              @RequestBody TodoDto todoDto){
+        log.info("==============> createTodo : " + username);
+        TodoDto createdTodo = todoService.addTodo(username, todoDto.getDescription(), todoDto.getTargetDate(), todoDto.isDone());
+        return createdTodo;
     }
 }
