@@ -13,6 +13,8 @@ server:
 # Spring Setting
 #################################
 spring:
+  main:
+    banner-mode: off
   mvc:
     format:
       date: yyyy-MM-dd
