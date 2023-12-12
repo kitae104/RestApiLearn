@@ -17,6 +17,11 @@ public class HelloWorldController {
         this.messageSource = messageSource;
     }
 
+    @GetMapping("/")
+    public String hello() {
+        return "Hello World";
+    }
+
     /**
      * 기본 인증 테스트
      * @return Success 문자열 반환
@@ -29,7 +34,7 @@ public class HelloWorldController {
     // /hello-world (endpoint)
     @GetMapping("/hello-world")
     public String helloWorld() {
-        return "Hello World";
+        return "Hello World check!!";
     }
     @GetMapping("/hello-world-bean")
     public HelloWorldBean helloWorldBean() {
