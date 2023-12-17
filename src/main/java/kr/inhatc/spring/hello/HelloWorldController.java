@@ -1,7 +1,9 @@
 package kr.inhatc.spring.hello;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Locale;
 
 @RestController     // RestAPI Controller - JSON으로 반환
+@Slf4j
 public class HelloWorldController {
 
     private MessageSource messageSource;
@@ -18,7 +21,8 @@ public class HelloWorldController {
     }
 
     @GetMapping("/")
-    public String hello() {
+    public String hello(Authentication authentication) {
+        log.info("authentication: {}", authentication);
         return "Hello World";
     }
 

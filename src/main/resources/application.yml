@@ -9,6 +9,14 @@ server:
       enabled: true
       force: true
 
+  #################################
+  # Same Site Cookie Setting
+  #################################
+      session:
+      cookie:
+          same-site: strict
+          secure: true
+
 #################################
 # Spring Setting
 #################################
@@ -46,10 +54,10 @@ spring:
     password: 1234
 
   #################################
-  # MySQL Setting
+  # H2 Setting
   #################################
-  #  datasource:
-  #    url: jdbc:h2:mem:testdb
+#  datasource:
+#    url: jdbc:h2:mem:testdb
 
 
   #################################
@@ -70,10 +78,21 @@ spring:
   ###############################
   # Security User
   ###############################
+#  security:
+#    user:
+#      name: test@test.com
+#      password: 1111
+
+  ###############################
+  # OAuth2 User
+  ###############################
   security:
-    user:
-      name: test@test.com
-      password: 1111
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
 
 ###############################
 # Log info

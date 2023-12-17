@@ -1,6 +1,8 @@
 package kr.inhatc.spring.jwt;
 
 import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jose.KeySourceException;
+import com.nimbusds.jose.jwk.JWKSelector;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
@@ -12,6 +14,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -32,13 +35,13 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.util.List;
 import java.util.UUID;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
 //@Configuration
 //@EnableWebSecurity
-//@EnableMethodSecurity
 public class JwtSecurityConfig {
 
     @Bean
@@ -48,7 +51,7 @@ public class JwtSecurityConfig {
         return httpSecurity
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/authenticate").permitAll()
-                        //.requestMatchers(PathRequest.toH2Console()).permitAll() // h2-console is a servlet and NOT recommended for a production
+                        .requestMatchers(PathRequest.toH2Console()).permitAll() // h2-console is a servlet and NOT recommended for a production
                         .requestMatchers(HttpMethod.OPTIONS,"/**")
                         .permitAll()
                         .anyRequest()
@@ -56,24 +59,29 @@ public class JwtSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.
                         sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                //.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt) // Deprecated in SB 3.1.x
                 .oauth2ResourceServer((oauth2) -> oauth2.jwt(withDefaults())) // Starting from SB 3.1.x using Lambda DSL
-                .httpBasic(withDefaults())
+                .httpBasic(
+                        Customizer.withDefaults())
+//                .headers(header -> { // Deprecated in SB 3.1.x
+//                    header.frameOptions().sameOrigin();
+//                })
                 .headers(header -> header.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)) // Starting from SB 3.1.x using Lambda DSL
                 .build();
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(
-            UserDetailsService userDetailsService) {
+    public AuthenticationManager authenticationManager(UserDetailsService userDetailsService) {
         var authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService);
+
         return new ProviderManager(authenticationProvider);
     }
 
     @Bean
     public UserDetailsService userDetailsService() {
-        UserDetails user = User.withUsername("abc@test.com")
-                .password("{noop}1111")
+        UserDetails user = User.withUsername("in28minutes")
+                .password("{noop}dummy")
                 .authorities("read")
                 .roles("USER")
                 .build();
@@ -84,6 +92,7 @@ public class JwtSecurityConfig {
     @Bean
     public JWKSource<SecurityContext> jwkSource() {
         JWKSet jwkSet = new JWKSet(rsaKey());
+
         return (((jwkSelector, securityContext)
                 -> jwkSelector.select(jwkSet)));
     }
@@ -102,7 +111,6 @@ public class JwtSecurityConfig {
 
     @Bean
     public RSAKey rsaKey() {
-
         KeyPair keyPair = keyPair();
 
         return new RSAKey

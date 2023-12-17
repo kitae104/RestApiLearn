@@ -23,7 +23,7 @@ class TodoRepositoryTest {
                     .username("kitae")
                     .description("Get AWS Certified" + i)
                     .done(false)
-                    .targetDate(LocalDateTime.now().plusYears(10))
+                    .targetDate(LocalDate.now().plusYears(10))
                     .build();
             todoRepository.save(todo);
         }
